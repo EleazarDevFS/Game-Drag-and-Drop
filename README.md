@@ -31,6 +31,6 @@ No requiere instalación.
 Solo descarga o clona este repositorio y abre el archivo `index.html` en tu navegador favorito.
 
 ```bash
-git clone https://github.com/tu-usuario/dragdrop-test-creator.git
-cd dragdrop-test-creator
+git clone https://github.com/EleazarDevFS/Game-Drag-and-Drop.git
+cd Drag-and-Drop
 # Abre  en tu navegador
