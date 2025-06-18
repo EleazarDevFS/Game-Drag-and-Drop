@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modal Verb "Might" - Drag & Drop Game</title>
+    <link rel="stylesheet" href="gameStyles.css">
+</head>
+<body>
+    <!-- Contenedor principal del juego -->
+    <div class="game-container">
+        <!-- Cabecera y título -->
+        <div class="header">
+            <h1>🎯 Modal Verbs Challenge</h1>
+            <div class="instructions">
+                <h3>📚 Instrucciones:</h3>
+                <p>Arrastra las palabras correctas (modal verbs) para completar las oraciones. Cada oración tiene una respuesta específica. ¡Tienes tiempo limitado!</p>
+            </div>
+        </div>
+        <!-- Botones de control del juego -->
+        <div class="controls">
+            <button class="btn" id="startBtn" onclick="startGame()">🎮 Start Game</button>
+            <button class="btn secondary" id="checkBtn" onclick="checkAnswers()">✅ Check Answers</button>
+            <button class="btn secondary" onclick="resetGame()">🔄 Reset</button>
+            <button class="btn secondary" onclick="toggleAdmin()">⚙️ Add Examples</button>
+        </div>
+        <!-- Barra de información: tiempo y puntuación -->
+        <div class="game-info">
+            <div class="timer" id="timer">⏰ Time: 60s</div>
+            <div class="score" id="score">📊 Score: 0/0</div>
+        </div>
+        <!-- Mensajes de estado (éxito/error) -->
+        <div id="statusMessage"></div>
+        <!-- Panel de administración para agregar ejemplos personalizados -->
+        <div class="admin-panel" id="adminPanel" style="display: none;">
+            <h3>➕ Agregar nuevos ejemplos</h3>
+            <div style="margin-bottom: 15px;">
+                <label class="switch-label">
+                    <input type="checkbox" id="useCustomExamples" onchange="toggleCustomExamples()">
+                    <span class="switch-text">Usar ejemplos personalizados</span>
+                </label>
+            </div>
+            <!-- Campo para nueva oración personalizada -->
+            <input type="text" id="newSentence" class="example-input" placeholder="Escribe una oración con [BLANK]. Ejemplo: I [BLANK] go to the party tonight.">
+            <!-- Campo para la respuesta de la oración -->
+            <input type="text" id="newAnswer" class="example-input word-input" placeholder="Respuesta">
+            <button class="btn" onclick="addExample()">Agregar ejemplo</button>
+            <div style="margin-top: 15px;">
+                <button class="btn secondary" onclick="loadDefaultExamples()">🔄 Cargar ejemplos por defecto</button>
+                <button class="btn secondary" onclick="clearCustomExamples()">🗑️ Borrar ejemplos personalizados</button>
+            </div>
+            <!-- Lista de ejemplos personalizados -->
+            <div id="customExamplesList" style="margin-top: 15px;"></div>
+        </div>
+        <!-- Área principal del juego: banco de palabras y oraciones -->
+        <div class="game-area">
+            <!-- Banco de palabras -->
+            <div class="word-bank">
+                <h3>🔤 Word Bank</h3>
+                <div id="wordBank"></div>
+            </div>
+
+            <div class="sentences-area">
+                <h3>📝 Complete the sentences:</h3>
+                <div id="sentences"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="game-over" id="gameOver">
+        <div class="game-over-content">
+            <h2>🎉 Game Over!</h2>
+            <div class="final-score" id="finalScore"></div>
+            <button class="btn" onclick="closeGameOver()">Play Again</button>
+        </div>
+    </div>
+    <script src="gameCode.js"></script>
+</body>
+</html>

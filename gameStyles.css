@@ -1,0 +1,595 @@
+
+/* Reset de márgenes, paddings y box-sizing para todos los elementos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilos generales del body: fuente, fondo y espaciado */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #a8c0ff 0%, #95a5b5 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+
+/* Contenedor principal del juego */
+.game-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Cabecera del juego */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+
+/* Título principal */
+h1 {
+    color: #4a5568;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Barra de información del juego (timer, score, etc.) */
+.game-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 15px;
+    background: #f7fafc;
+    border-radius: 10px;
+    border-left: 5px solid #667eea;
+}
+
+
+/* Estilos para el temporizador y la puntuación */
+.timer,
+.score {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #2d3748;
+}
+
+
+/* Temporizador en estado de advertencia (menos de 10s) */
+.timer.warning {
+    color: #e53e3e;
+    animation: pulse 1s infinite;
+}
+
+
+/* Animación de parpadeo para el temporizador */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+
+/* Área principal del juego: banco de palabras y oraciones */
+.game-area {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+
+/* Adaptación responsiva para móviles */
+@media (max-width: 768px) {
+    .game-area {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+
+/* Banco de palabras (área de arrastre) */
+.word-bank {
+    background: #edf2f7;
+    padding: 20px;
+    border-radius: 15px;
+    border: 2px dashed #cbd5e0;
+}
+
+
+/* Título del banco de palabras */
+.word-bank h3 {
+    color: #4a5568;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+
+/* Palabra individual del banco de palabras (draggable) */
+.word-item {
+    background: linear-gradient(45deg, #89a7e0, #95a5b5);
+    color: white;
+    padding: 12px 20px;
+    margin: 8px;
+    border-radius: 25px;
+    cursor: grab;
+    display: inline-block;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    user-select: none;
+}
+
+
+/* Efecto hover sobre la palabra del banco */
+.word-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Efecto al arrastrar la palabra */
+.word-item:active {
+    cursor: grabbing;
+    transform: scale(0.95);
+}
+
+
+/* Palabra mientras se está arrastrando */
+.word-item.dragging {
+    opacity: 0.5;
+    transform: rotate(5deg);
+}
+
+
+/* Palabra ya utilizada (no se puede volver a arrastrar) */
+.word-item.used {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+
+/* Área donde se muestran las oraciones */
+.sentences-area {
+    background: #f7fafc;
+    padding: 20px;
+    border-radius: 15px;
+    border: 2px solid #e2e8f0;
+}
+
+
+/* Oración individual (zona de drop) */
+.sentence {
+    background: white;
+    margin: 15px 0;
+    padding: 20px;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+
+/* Efecto hover sobre la oración */
+.sentence:hover {
+    border-color: #667eea;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+/* Oración correcta (respuesta acertada) */
+.sentence.correct {
+    border-color: #48bb78;
+    background: #f0fff4;
+    animation: correctPulse 0.6s ease;
+}
+
+
+/* Oración incorrecta (respuesta fallida) */
+.sentence.incorrect {
+    border-color: #f56565;
+    background: #fff5f5;
+    animation: shake 0.5s ease;
+}
+
+
+/* Animación de pulso para respuestas correctas */
+@keyframes correctPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+
+/* Animación de sacudida para respuestas incorrectas */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+
+/* Zona donde se sueltan las palabras (drop) */
+.drop-zone {
+    display: inline-block;
+    min-width: 100px;
+    min-height: 40px;
+    border: 2px dashed #cbd5e0;
+    border-radius: 8px;
+    padding: 8px 15px;
+    margin: 0 5px;
+    background: #f7fafc;
+    transition: all 0.3s ease;
+    vertical-align: middle;
+    font-weight: bold;
+    color: #667eea;
+}
+
+
+/* Zona de drop cuando se arrastra una palabra encima */
+.drop-zone.drag-over {
+    border-color: #667eea;
+    background: #ebf4ff;
+    transform: scale(1.05);
+}
+
+
+/* Zona de drop cuando ya tiene una palabra */
+.drop-zone.filled {
+    border-color: #48bb78;
+    background: #f0fff4;
+    border-style: solid;
+}
+
+
+/* Muestra un signo de pregunta cuando la zona está vacía */
+.drop-zone:empty::after {
+    content: "?";
+    color: #cbd5e0;
+    font-size: 1.2em;
+}
+
+
+/* Contenedor de los botones de control del juego */
+.controls {
+    text-align: center;
+    margin-top: 30px;
+}
+
+
+/* Botón principal */
+.btn {
+    background: linear-gradient(45deg, #89a7e0, #95a5b5);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Efecto hover sobre el botón */
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Efecto al presionar el botón */
+.btn:active {
+    transform: translateY(0);
+}
+
+
+/* Botón secundario (color diferente) */
+.btn.secondary {
+    background: linear-gradient(45deg, #a0aec0, #718096);
+}
+
+
+/* Botón deshabilitado */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+/* Pantalla de fin de juego (overlay) */
+.game-over {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* Contenido de la pantalla de fin de juego */
+.game-over-content {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+        /* Animación de celebración (escala y opacidad) para mostrar logros */
+        @keyframes celebrate {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Animación para los confetis (caen y giran) */
+        @keyframes confetti {
+            0% {
+                transform: translateY(0) rotate(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Capa que cubre la pantalla para mostrar la animación de celebración */
+        .celebration {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            animation: celebrate 0.5s ease-out;
+        }
+
+        /* Estilo de cada partícula de confeti */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #667eea;
+            border-radius: 50%;
+        }
+
+        /* Mensaje especial para puntuación perfecta */
+        .perfect-score {
+            color: #667eea;
+            font-size: 2.5em;
+            margin: 20px 0;
+            animation: celebrate 0.5s ease-out;
+        }
+
+        /* Título de la pantalla de fin de juego */
+        .game-over h2 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        /* Puntuación final mostrada al terminar el juego */
+        .final-score {
+            font-size: 1.5em;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* Panel de administración para agregar ejemplos personalizados */
+        .admin-panel {
+            background: #edf2f7;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 30px;
+            border: 2px solid #e2e8f0;
+        }
+
+        /* Título del panel de administración */
+        .admin-panel h3 {
+            color: #4a5568;
+            margin-bottom: 15px;
+        }
+
+        /* Campos de entrada para agregar nuevas oraciones y respuestas */
+        .example-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            margin: 5px 0;
+            font-size: 1em;
+            resize: vertical;
+        }
+
+
+/* Efecto de enfoque para los campos de entrada de ejemplo */
+.example-input:focus {
+    border-color: #667eea;
+    outline: none;
+}
+
+
+/* Campo de entrada para la respuesta (más corto) */
+.word-input {
+    width: 150px;
+    margin-right: 10px;
+}
+
+
+/* Caja de instrucciones del juego */
+.instructions {
+    background: #ebf4ff;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border-left: 5px solid #667eea;
+}
+
+
+/* Título de la sección de instrucciones */
+.instructions h3 {
+    color: #2b6cb0;
+    margin-bottom: 10px;
+}
+
+
+/* Texto de las instrucciones */
+.instructions p {
+    color: #2d3748;
+    line-height: 1.6;
+}
+
+
+/* Mensaje de estado (éxito o error) */
+.status-message {
+    text-align: center;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+
+/* Mensaje de éxito */
+.status-message.success {
+    background: #f0fff4;
+    color: #38a169;
+    border: 2px solid #68d391;
+}
+
+
+/* Mensaje de error */
+.status-message.error {
+    background: #fff5f5;
+    color: #e53e3e;
+    border: 2px solid #feb2b2;
+}
+
+        /* Etiqueta visual para el switch de ejemplos personalizados */
+        .switch-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            gap: 10px;
+        }
+
+        /* Estilo base del switch (checkbox personalizado) */
+        .switch-label input[type="checkbox"] {
+            width: 40px;
+            height: 20px;
+            appearance: none;
+            background: #cbd5e0;
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* Círculo interior del switch (el "botón" que se mueve) */
+        .switch-label input[type="checkbox"]::before {
+            content: '';
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* Color de fondo cuando el switch está activado */
+        .switch-label input[type="checkbox"]:checked {
+            background-color: #667eea !important;
+        }
+
+        /* Mueve el círculo a la derecha cuando está activado */
+        .switch-label input[type="checkbox"]:checked::before {
+            left: 22px;
+        }
+
+        /* Texto descriptivo al lado del switch */
+        .switch-text {
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        /* Contenedor de la lista de ejemplos personalizados */
+        #customExamplesList {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+
+/* Elemento individual de la lista de ejemplos personalizados */
+.custom-example-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+
+/* Elimina el borde inferior del último elemento de la lista */
+.custom-example-item:last-child {
+    border-bottom: none;
+}
+
+
+/* Botón para eliminar un ejemplo personalizado */
+.delete-example {
+    color: #e53e3e;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+
+/* Efecto hover al pasar sobre el botón de eliminar */
+.delete-example:hover {
+    background: #fff5f5;
+}
