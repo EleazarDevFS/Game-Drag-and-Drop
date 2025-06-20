@@ -518,31 +518,51 @@ function endGame() {
     let isPerfectScore = gameData.score === gameData.totalQuestions;
     let isExcellentScore = percentage >= 80;
 
+    // Cambia el título según el motivo de finalización
+    const gameOverTitle = document.getElementById('gameOverTitle');
     if (isPerfectScore) {
+        if (gameOverTitle) gameOverTitle.textContent = '🥳Successful Mission';
         message = `
-                    <div class="celebration">
-                        ${createConfetti()}
-                    </div>
                     <div class="perfect-score">
                         🌟 ¡PERFECTO! 🌟<br>
                         ¡Felicitaciones!
                     </div>
                     <p>Has demostrado un dominio total de los verbos modales.</p>
                 `;
-    } else if (isExcellentScore) {
-        message = `
-                    <div class="celebration">
-                        ${createConfetti()}
-                    </div>
-                    <div class="perfect-score">
-                        🎉 ¡Excelente! 🎉<br>
-                        ¡Muy bien hecho!
-                    </div>
-                `;
-    } else if (percentage >= 60) {
-        message = '👍 Good job!';
+    } else if (gameData.timer <= 0) {
+        if (gameOverTitle) gameOverTitle.textContent = '🎉 Game Over!';
+        if (isExcellentScore) {
+            message = `
+                        <div class="celebration">
+                            ${createConfetti()}
+                        </div>
+                        <div class="perfect-score">
+                            🎉 ¡Excelente! 🎉<br>
+                            ¡Muy bien hecho!
+                        </div>
+                    `;
+        } else if (percentage >= 60) {
+            message = '👍 Good job!';
+        } else {
+            message = '💪 Keep practicing!';
+        }
     } else {
-        message = '💪 Keep practicing!';
+        if (gameOverTitle) gameOverTitle.textContent = '🎉 Game Over!';
+        if (isExcellentScore) {
+            message = `
+                        <div class="celebration">
+                            ${createConfetti()}
+                        </div>
+                        <div class="perfect-score">
+                            🎉 ¡Excelente! 🎉<br>
+                            ¡Muy bien hecho!
+                        </div>
+                    `;
+        } else if (percentage >= 60) {
+            message = '👍 Good job!';
+        } else {
+            message = '💪 Keep practicing!';
+        }
     }
 
     document.getElementById('finalScore').innerHTML = `
